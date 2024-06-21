@@ -81,8 +81,40 @@ vim ~/.zshrc
 ``` ini
 export PATH=$PATH:/usr/local/go/bin
 ```
+##### 5.1 golang多版本管理
+- https://github.com/voidint/g
+``` bash
+curl -sSL https://raw.githubusercontent.com/voidint/g/master/install.sh | bash
+echo "unalias g" >> ~/.zshrc # Optional. If other programs (such as `git`) have used `g` as an alias.
+source "$HOME/.g/env"
 
-##### 5.1 安装gotests、gopls、delve
+# 列出所有可供安装的 Go 版本
+g ls-remote
+
+# 查询当前可用的稳定版
+g ls-remote stable
+
+# 安装特定版本的 Go
+g install 1.14.7
+
+# 查询已安装的 Go 版本列表
+g ls
+
+# 切换到另一个已安装的 Go 版本
+g use 1.19.10
+
+#　卸载特定已安装的 Go 版本：
+g uninstall 1.19.10
+
+＃ 清除 Go 安装的包文件缓存
+g clean
+
+g version
+g self update
+g self uninstall
+```
+
+##### 5.2 安装gotests、gopls、delve
 ``` bash
 go env -w GOPROXY=https://goproxy.cn,direct
 go install github.com/cweill/gotests/gotests@latest
@@ -91,12 +123,14 @@ go install golang.org/x/tools/gopls@latest
 # go install golang.org/x/tools/gopls@v0.15.3
 ```
 
-##### 5.2 安装ctags
+##### 5.3 安装ctags
 - ###### Plug `preservim/tagbar`
 > 大纲视图
 [源码安装ctags](http://ctags.sourceforge.net/) 或 [universal-ctags(推荐)](https://github.com/universal-ctags/ctags)
 
 ```bash
+sudo snap install universal-ctags
+/snap/bin/ctags
 # mac
 brew install ctags
 
@@ -110,31 +144,13 @@ make && make install # may require extra privileges depending on where to instal
 sudo vi /etc/bash.bashrc
 # 最后添加
 export PATH=/usr/local/ctags/bin:$PATH
-
-
-wget http://prdownloads.sourceforge.net/ctags/ctags-5.8.tar.gz
-tar -xvf ctags-5.8.tar.gz
-cd ctags-5.8
-./configure --prefix=/usr/local/ctags
-make && make install
-sudo vi /etc/bash.bashrc
-# 最后添加
-export PATH=/usr/local/ctags/bin:$PATH
-
-```
-
-```sh
-# 需要添加$GOPATH/bin目录到系统PATH中
-GO111MODULE=on go get -u github.com/jstemmer/gotags
 ```
 
 [Tagbar](https://github.com/preservim/tagbar)
-
 [TagbarWiki](https://github.com/preservim/tagbar/wiki)
-
 [gotags](https://github.com/jstemmer/gotags)
 
-```
+``` ini
 let g:tagbar_type_go = {
   \ 'ctagstype' : 'go',
   \ 'kinds'     : [
