@@ -10,6 +10,7 @@ sudo snap refresh
 如果是虚拟机，全屏和与主机共享剪切板
 sudo apt install open-vm-tools-desktop
 ```
+
 #### 2. zsh
 ``` bash
 sudo apt install wget curl git -y
@@ -43,6 +44,7 @@ zsh-syntax-highlighting
 ``` bash
 source ~/.zshrc
 ```
+
 #### 3. 挂盘
 虚拟机共享目录挂盘
 ``` bash
@@ -53,4 +55,137 @@ sudo vi /etc/fstab
 .host:/   /mnt/hgfs/  fuse.vmhgfs-fuse   allow_other  0   0
 systemctl daemon-reload
 ls /mnt/hgfs/
+```
+
+#### 4. 安装neovim
+``` bash
+# 新版本好像不需要添加ppa了
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt update
+sudo apt install neovim
+```
+
+#### 4. 安装nodejs
+```bash
+sudo apt-get install nodejs
+sudo apt install npm
+```
+
+#### 5. 安装golang及相关环境
+``` bash
+wget https://golang.google.cn/dl/go1.20.14.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.20.14.linux-amd64.tar.gz
+vim ~/.zshrc
+```
+- 添加golang路径
+``` ini
+export PATH=$PATH:/usr/local/go/bin
+```
+
+##### 5.1 安装gotests、gopls、delve
+``` bash
+go env -w GOPROXY=https://goproxy.cn,direct
+go install github.com/cweill/gotests/gotests@latest
+go install golang.org/x/tools/gopls@latest
+# go1.21之前要按照下面版本
+# go install golang.org/x/tools/gopls@v0.15.3
+```
+
+##### 5.2 安装ctags
+- ###### Plug `preservim/tagbar`
+> 大纲视图
+[源码安装ctags](http://ctags.sourceforge.net/) 或 [universal-ctags(推荐)](https://github.com/universal-ctags/ctags)
+
+```bash
+# mac
+brew install ctags
+
+# 或 universal-ctags(推荐)
+git clone https://github.com/universal-ctags/ctags.git
+cd ctags
+./autogen.sh
+# 若检测到没有相关库，则添加相关库： apt install autoconf automake pkg-config build-essential make
+./configure --prefix=/usr/local/ctags  # defaults to /usr/local
+make && make install # may require extra privileges depending on where to install
+sudo vi /etc/bash.bashrc
+# 最后添加
+export PATH=/usr/local/ctags/bin:$PATH
+
+
+wget http://prdownloads.sourceforge.net/ctags/ctags-5.8.tar.gz
+tar -xvf ctags-5.8.tar.gz
+cd ctags-5.8
+./configure --prefix=/usr/local/ctags
+make && make install
+sudo vi /etc/bash.bashrc
+# 最后添加
+export PATH=/usr/local/ctags/bin:$PATH
+
+```
+
+```sh
+# 需要添加$GOPATH/bin目录到系统PATH中
+GO111MODULE=on go get -u github.com/jstemmer/gotags
+```
+
+[Tagbar](https://github.com/preservim/tagbar)
+
+[TagbarWiki](https://github.com/preservim/tagbar/wiki)
+
+[gotags](https://github.com/jstemmer/gotags)
+
+```
+let g:tagbar_type_go = {
+  \ 'ctagstype' : 'go',
+  \ 'kinds'     : [
+      \ 'p:package',
+      \ 'i:imports:1',
+      \ 'c:constants',
+      \ 'v:variables',
+      \ 't:types',
+      \ 'n:interfaces',
+      \ 'w:fields',
+      \ 'e:embedded',
+      \ 'm:methods',
+      \ 'r:constructor',
+      \ 'f:functions'
+  \ ],
+  \ 'sro' : '.',
+  \ 'kind2scope' : {
+      \ 't' : 'ctype',
+      \ 'n' : 'ntype'
+  \ },
+  \ 'scope2kind' : {
+      \ 'ctype' : 't',
+      \ 'ntype' : 'n'
+  \ },
+  \ 'ctagsbin'  : 'gotags',
+  \ 'ctagsargs' : '-sort -silent'
+\ }
+```
+
+#### 6. 安装Ag、Rg
+``` bash
+# [What's so great about Ag?](https://github.com/ggreer/the_silver_searcher)
+sudo apt install silversearcher-ag
+
+# [fzf requires ripgrep (rg)](https://github.com/BurntSushi/ripgrep)
+sudo apt install ripgrep
+```
+
+#### 7. 安装vim-plug及配置
+``` bash
+#　mkdir -p ~/.config/nvim
+cd ~/.config
+git clone https://github.com/tianguong/nvim_lua.git nvim
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+:PlugInstall
+:PlugUpdate
+:PlugUpgrade
+:GoUpdateBinaries
+
+# coc-go, coc-json, coc-lua, coc-git, coc-snippets
+:CocInstall coc-go
+:CocInstall coc-pyright
 ```
