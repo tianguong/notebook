@@ -112,6 +112,15 @@ g clean
 g version
 g self update
 g self uninstall
+
+```
+- gopls多版本支持 [https://github.com/golang/tools/blob/master/gopls/README.md#supported-go-versions]
+``` 
+Go 1.12	gopls@v0.7.5
+Go 1.15	gopls@v0.9.5
+Go 1.17	gopls@v0.11.0
+Go 1.18	gopls@v0.14.2
+Go 1.20	gopls@v0.15.3
 ```
 
 ##### 5.2 安装gotests、gopls、delve
