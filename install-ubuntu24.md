@@ -122,6 +122,38 @@ Go 1.17	gopls@v0.11.0
 Go 1.18	gopls@v0.14.2
 Go 1.20	gopls@v0.15.3
 ```
+coc-setting.json gopls配置
+- goplsPath需要指向按照地点，coc自身总是安装最新的，容易和golang版本不兼容
+``` json
+"languageserver": {    
+    "golang": {    
+        "command": "gopls",    
+        "rootPatterns": [    
+            "go.mod",    
+            ".vim/",    
+            ".git/",    
+            ".hg/"    
+        ],    
+        "trace.server": "verbose",    
+        "filetypes": [    
+            "go"    
+        ],    
+        "initializationOptions": {    
+            "usePlaceholders": true    
+        }    
+    }    
+},    
+"go.goplsOptions": {    
+    "completeUnimported": true    
+},    
+"go.goplsPath":"/home/ng/go/bin/gopls",    
+"go.delveConfig": {    
+    "dlvLoadConfig": {    
+        "maxStringLen": 1024,    
+        "maxArrayValues": 1024    
+    }    
+},    
+```
 
 ##### 5.2 安装gotests、gopls、delve
 ``` bash
@@ -130,6 +162,10 @@ go install github.com/cweill/gotests/gotests@latest
 go install golang.org/x/tools/gopls@latest
 # go1.21之前要按照下面版本
 # go install golang.org/x/tools/gopls@v0.15.3
+
+go install github.com/go-delve/delve/cmd/dlv@latest
+# go1.17.13可以按照下面版本dlv
+go install github.com/go-delve/delve/cmd/dlv@v1.20.2
 ```
 
 ##### 5.3 安装ctags
