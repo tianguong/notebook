@@ -48,6 +48,11 @@ source ~/.zshrc
 #### 3. 挂盘
 虚拟机共享目录挂盘
 ``` bash
+# 尝试解决问题
+git clone https://github.com/rasa/vmware-tools-patches.git
+cd vmware-tools-patches
+./patched-open-vm-tools.sh
+
 查看共享目录：vmware-hgfsclient
 查看目录：ls /mnt
 创建目录：sudo mkdir /mnt/hgfs 
@@ -55,6 +60,8 @@ sudo vi /etc/fstab
 .host:/   /mnt/hgfs/  fuse.vmhgfs-fuse   allow_other  0   0
 systemctl daemon-reload
 ls /mnt/hgfs/
+
+
 ```
 
 #### 4. 安装neovim
